@@ -1,10 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { marked } from 'marked';
 import { parsePost, collectPosts } from './posts.js';
 
-const source = readFileSync(new URL('../content/posts/hello-world.md', import.meta.url), 'utf8');
+const source = `---
+title: Hello World
+date: 2026-10-15
+draft: false
+---
+This is **Markdown**.
+
+![Example image](images/hello-world.svg)
+`;
 test('Hello World has metadata and renders Markdown and an image', () => {
   const post = parsePost(source, 'hello-world.md');
   assert.equal(post.slug, 'hello-world');

@@ -3,11 +3,17 @@ import { parse } from 'yaml';
 export function parsePost(source, filename) {
   const match = source.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---(?:\n|$)([\s\S]*)$/);
   if (!match) throw new Error(`${filename}: missing YAML front matter`);
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(filename.split('/').pop())) {
+    throw new Error(`${filename}: use a lowercase, hyphen-separated Markdown filename`);
+  }
   const metadata = parse(match[1]);
   if (!metadata || typeof metadata.title !== 'string' || !metadata.title.trim() ||
       typeof metadata.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(metadata.date) ||
       Number.isNaN(Date.parse(metadata.date))) {
     throw new Error(`${filename}: title and date (YYYY-MM-DD) are required`);
+  }
+  if (metadata.description !== undefined && typeof metadata.description !== 'string') {
+    throw new Error(`${filename}: description must be text`);
   }
   if (metadata.draft !== undefined && typeof metadata.draft !== 'boolean') {
     throw new Error(`${filename}: draft must be true or false`);
