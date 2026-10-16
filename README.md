@@ -102,9 +102,30 @@ You can also display an image hosted elsewhere or make an image a link:
 
 When editing on GitHub, upload images into the same `public/images/` folder and commit them along with the Markdown changes. Check the result with `npm run dev`; after publishing, pushing to the deployment branch triggers the GitHub Pages build.
 
-## Edit About and Projects
+## Edit About
 
-Edit `content/about.md` and `content/projects.md`. These pages use the same `marked` parser, HTML sanitization, and Markdown styling as blog posts. Use a `# Heading` for the page title; front matter is not needed for these standalone pages. Images use the same relative `images/...` paths and `public/images/` folder as posts.
+Edit `content/about.md` using ordinary Markdown with a `# About` heading. It uses the same parser, sanitization, styling, and image paths as posts; no front matter is required.
+
+## Add a project
+
+Create one Markdown file per project in `content/projects/`, such as `my-project.md`:
+
+```md
+---
+title: My project
+url: https://example.com/
+order: 3
+draft: false
+---
+
+A short summary explaining what the project does.
+
+![Project screenshot](images/my-project/screenshot.png)
+
+[Try the project →](https://example.com/)
+```
+
+Each file becomes a separate card on `/projects/`, matching the blog layout. `title` and an absolute HTTP(S) `url` are required. The title links to that URL. `order` is optional: smaller numbers appear first, followed by unordered projects; ties use filenames. Set optional `draft: true` to exclude a project from the site. Write summaries, images, and links in the Markdown body, using the same image paths as posts. Project dates are not required. Editing or adding files automatically reloads the development site.
 
 ## GitHub Pages
 
@@ -135,3 +156,4 @@ Write as a technical lead who enjoys learning and explaining what they learn. St
 Check factual claims against primary documentation. Distinguish observations from guarantees, lab measurements from real-user experience, and illustrative snippets from tested deployments. Explain prerequisites and meaningful failure cases without turning every post into a checklist. Don't invent experience or results.
 
 Keep original publication dates and stable filenames when revising migrated posts. Identify historical dependencies and commands where they differ from current guidance, and link to sources for important corrections. Prefer small, inspectable experiments over claims that something is automatically faster, safer, or free.
+
